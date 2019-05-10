@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qtracegraphicssystem", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/graphicssystems/trace\qtracegraphicssystem.vcxproj", "{D7A4C49C-AE7F-35EB-8C7E-F43F11F6360F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qglgraphicssystem", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/graphicssystems/opengl\qglgraphicssystem.vcxproj", "{035B75C6-7D34-31E1-9E07-4D10ED6C59CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7A4C49C-AE7F-35EB-8C7E-F43F11F6360F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D7A4C49C-AE7F-35EB-8C7E-F43F11F6360F}.Debug|Win32.Build.0 = Debug|Win32
+		{D7A4C49C-AE7F-35EB-8C7E-F43F11F6360F}.Release|Win32.ActiveCfg = Release|Win32
+		{D7A4C49C-AE7F-35EB-8C7E-F43F11F6360F}.Release|Win32.Build.0 = Release|Win32
+		{035B75C6-7D34-31E1-9E07-4D10ED6C59CC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{035B75C6-7D34-31E1-9E07-4D10ED6C59CC}.Debug|Win32.Build.0 = Debug|Win32
+		{035B75C6-7D34-31E1-9E07-4D10ED6C59CC}.Release|Win32.ActiveCfg = Release|Win32
+		{035B75C6-7D34-31E1-9E07-4D10ED6C59CC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

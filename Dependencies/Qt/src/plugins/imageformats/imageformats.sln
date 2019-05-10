@@ -1,0 +1,57 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qjpeg", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/jpeg\qjpeg.vcxproj", "{2E6C30C2-2571-3616-A3C4-91ED34A2E2E4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qgif", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/gif\qgif.vcxproj", "{F390F335-9AA8-30E1-9851-8CEF3B274D35}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qmng", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/mng\qmng.vcxproj", "{28B5A451-805E-39F8-ADDC-66C04EC98684}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qsvg", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/svg\qsvg.vcxproj", "{B7FCFD6D-3AD1-3484-893A-4CAA3BFC751B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qtiff", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/tiff\qtiff.vcxproj", "{D0EC73E0-2A25-36F6-AB14-68CD402A214B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qico", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/ico\qico.vcxproj", "{6A80548E-5E9D-36A1-A09D-1C0360288BF6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qtga", "E:/OpenOpen/qt-everywhere-opensource-src-4.8.7/src/plugins/imageformats/tga\qtga.vcxproj", "{D22ABECB-DEA9-3540-BB26-A79C4D2CF582}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E6C30C2-2571-3616-A3C4-91ED34A2E2E4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E6C30C2-2571-3616-A3C4-91ED34A2E2E4}.Debug|Win32.Build.0 = Debug|Win32
+		{2E6C30C2-2571-3616-A3C4-91ED34A2E2E4}.Release|Win32.ActiveCfg = Release|Win32
+		{2E6C30C2-2571-3616-A3C4-91ED34A2E2E4}.Release|Win32.Build.0 = Release|Win32
+		{F390F335-9AA8-30E1-9851-8CEF3B274D35}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F390F335-9AA8-30E1-9851-8CEF3B274D35}.Debug|Win32.Build.0 = Debug|Win32
+		{F390F335-9AA8-30E1-9851-8CEF3B274D35}.Release|Win32.ActiveCfg = Release|Win32
+		{F390F335-9AA8-30E1-9851-8CEF3B274D35}.Release|Win32.Build.0 = Release|Win32
+		{28B5A451-805E-39F8-ADDC-66C04EC98684}.Debug|Win32.ActiveCfg = Debug|Win32
+		{28B5A451-805E-39F8-ADDC-66C04EC98684}.Debug|Win32.Build.0 = Debug|Win32
+		{28B5A451-805E-39F8-ADDC-66C04EC98684}.Release|Win32.ActiveCfg = Release|Win32
+		{28B5A451-805E-39F8-ADDC-66C04EC98684}.Release|Win32.Build.0 = Release|Win32
+		{B7FCFD6D-3AD1-3484-893A-4CAA3BFC751B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7FCFD6D-3AD1-3484-893A-4CAA3BFC751B}.Debug|Win32.Build.0 = Debug|Win32
+		{B7FCFD6D-3AD1-3484-893A-4CAA3BFC751B}.Release|Win32.ActiveCfg = Release|Win32
+		{B7FCFD6D-3AD1-3484-893A-4CAA3BFC751B}.Release|Win32.Build.0 = Release|Win32
+		{D0EC73E0-2A25-36F6-AB14-68CD402A214B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D0EC73E0-2A25-36F6-AB14-68CD402A214B}.Debug|Win32.Build.0 = Debug|Win32
+		{D0EC73E0-2A25-36F6-AB14-68CD402A214B}.Release|Win32.ActiveCfg = Release|Win32
+		{D0EC73E0-2A25-36F6-AB14-68CD402A214B}.Release|Win32.Build.0 = Release|Win32
+		{6A80548E-5E9D-36A1-A09D-1C0360288BF6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6A80548E-5E9D-36A1-A09D-1C0360288BF6}.Debug|Win32.Build.0 = Debug|Win32
+		{6A80548E-5E9D-36A1-A09D-1C0360288BF6}.Release|Win32.ActiveCfg = Release|Win32
+		{6A80548E-5E9D-36A1-A09D-1C0360288BF6}.Release|Win32.Build.0 = Release|Win32
+		{D22ABECB-DEA9-3540-BB26-A79C4D2CF582}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D22ABECB-DEA9-3540-BB26-A79C4D2CF582}.Debug|Win32.Build.0 = Debug|Win32
+		{D22ABECB-DEA9-3540-BB26-A79C4D2CF582}.Release|Win32.ActiveCfg = Release|Win32
+		{D22ABECB-DEA9-3540-BB26-A79C4D2CF582}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
