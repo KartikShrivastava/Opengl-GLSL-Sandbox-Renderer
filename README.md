@@ -12,3 +12,5 @@ Bits added so far:
 -Qt key press event
 
 Note: I've added all the dependencies because I think it is much easier for a beginner to just clone and run it directly. Right now dependencies are built in Windows only.
+
+![](Snapshots/Capture.JPG)
