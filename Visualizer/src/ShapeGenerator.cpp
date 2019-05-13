@@ -143,12 +143,12 @@ ShapeData ShapeGenerator::MakeStar() {
 		glm::vec3(+0.6f, +0.6f, +0.6f), //color
 		glm::vec3(+0.2f, +0.0f, +0.1f), //1
 		glm::vec3(+0.6f, +0.6f, +0.6f), //color
-		glm::vec3(+0.0f, +1.0f, +0.1f), //2
+		glm::vec3(+0.0f, +1.0f, +0.0f), //2
 		glm::vec3(+0.6f, +0.6f, +0.6f), //color
 		
 		//Face 2
 		//0
-		glm::vec3(+0.5f, -0.866f, +0.1f), //3
+		glm::vec3(+0.866f, -0.5f, +0.0f), //3
 		glm::vec3(+0.6f, +0.6f, +0.6f), //color
 		//1
 		
@@ -157,26 +157,77 @@ ShapeData ShapeGenerator::MakeStar() {
 		glm::vec3(+0.4f, +0.4f, +0.4f), //color
 		glm::vec3(+0.0f, -0.2f, +0.1f), //5
 		glm::vec3(+0.4f, +0.4f, +0.4f), //color
-		glm::vec3(+0.5f, -0.866f, +0.1f), //6
+		glm::vec3(+0.866f, -0.5f, +0.0f), //6
 		glm::vec3(+0.4f, +0.4f, +0.4f), //color
 
 		//Face 4
 		//4
-		glm::vec3(-0.5f, -0.866f, +0.1f), //7
+		glm::vec3(-0.866f, -0.5f, +0.0f), //7
 		glm::vec3(+0.4f, +0.4f, +0.4f), //color
-		//6
+		//5
 
 		//Face 5
 		glm::vec3(+0.0f, +0.0f, +0.1f), //8
 		glm::vec3(+1.0f, +1.0f, +1.0f), //color
 		glm::vec3(-0.2f, +0.0f, +0.1f), //9
 		glm::vec3(+1.0f, +1.0f, +1.0f), //color
-		glm::vec3(-0.5f, -0.866f, +1.0f), //10
+		glm::vec3(-0.866f, -0.5f, +0.0f), //10
 		glm::vec3(+1.0f, +1.0f, +1.0f), //color
 		
 		//Face 6
 		//8
-		glm::vec3(+0.0f, +1.0f, +0.1f), //11
+		glm::vec3(+0.0f, +1.0f, +0.0f), //11
+		glm::vec3(+1.0f, +1.0f, +1.0f), //color
+
+		//side faces
+		glm::vec3(+0.0f, +1.0f, +0.0f), //12
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		glm::vec3(+0.2f, +0.0f, +0.1f), //13
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		glm::vec3(+0.2f, -0.0f, -0.1f), //14
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+
+		//13
+		glm::vec3(+0.866f, -0.5f, +0.0f), //15
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		//14
+
+		//15
+		glm::vec3(+0.0f, -0.2f, +0.1f), //16
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		glm::vec3(+0.0f, -0.2f, -0.1f), //17
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+
+		//16
+		glm::vec3(-0.866f, -0.5f, +0.0f), //18
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		//17
+
+		//18
+		glm::vec3(-0.2f, +0.0f, +0.1f), //19
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		glm::vec3(-0.2f, +0.0f, -0.1f), //20
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+
+		//19
+		glm::vec3(+0.0f, +1.0f, +0.0f), //21
+		glm::vec3(+0.2f, +0.2f, +0.2f), //color
+		//20
+
+		//Back faces
+		glm::vec3(+0.0f, +0.0f, -0.1f), //22
+		glm::vec3(+0.6f, +0.6f, +0.6f), //color
+		glm::vec3(+0.2f, +0.0f, -0.1f), //23
+		glm::vec3(+0.6f, +0.6f, +0.6f), //color
+
+		glm::vec3(+0.0f, +0.0f, -0.1f), //24
+		glm::vec3(+0.4f, +0.4f, +0.4f), //color
+		glm::vec3(+0.0f, -0.2f, -0.1f), //25
+		glm::vec3(+0.4f, +0.4f, +0.4f), //color
+
+		glm::vec3(+0.0f, +0.0f, -0.1f), //26
+		glm::vec3(+1.0f, +1.0f, +1.0f), //color
+		glm::vec3(-0.2f, +0.0f, -0.1f), //27
 		glm::vec3(+1.0f, +1.0f, +1.0f), //color
 	};
 
@@ -188,6 +239,15 @@ ShapeData ShapeGenerator::MakeStar() {
 		0, 1, 2, 0, 3, 1,
 		4, 5, 6, 4, 7, 5,
 		8, 9, 10, 8, 11, 9,
+		12, 13, 14,
+		13, 15, 14,
+		15, 16, 17,
+		16, 18, 17,
+		18, 19, 20,
+		19, 21, 20,
+		22, 2, 23, 22, 23, 3,
+		24, 6, 25, 24, 25, 7,
+		26, 10, 27, 26, 27, 11,
 	};
 	ret.numIndices = NUM_ARRAY_ELEMENTS(stackIndices);
 	ret.indices = new unsigned short[ret.numIndices];
