@@ -21,7 +21,7 @@ sf::Music music;
 #define N 10000
 
 void VisualizerWindow::SendDataToOpenGL() {
-	ShapeData shape = ShapeGenerator::MakeCube();
+	ShapeData shape = ShapeGenerator::MakeStar();
 	GLuint vertexBufferID;
 	glGenBuffers(1, &vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);

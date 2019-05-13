@@ -134,3 +134,64 @@ ShapeData ShapeGenerator::MakeCube() {
 
 	return ret;
 }
+
+ShapeData ShapeGenerator::MakeStar() {
+	ShapeData ret;
+	Vertex stackVerts[] = {
+		//Face 1
+		glm::vec3(+0.0f, +0.0f, +0.1f), //0
+		glm::vec3(+0.6f, +0.6f, +0.6f), //color
+		glm::vec3(+0.2f, +0.0f, +0.1f), //1
+		glm::vec3(+0.6f, +0.6f, +0.6f), //color
+		glm::vec3(+0.0f, +1.0f, +0.1f), //2
+		glm::vec3(+0.6f, +0.6f, +0.6f), //color
+		
+		//Face 2
+		//0
+		glm::vec3(+0.5f, -0.866f, +0.1f), //3
+		glm::vec3(+0.6f, +0.6f, +0.6f), //color
+		//1
+		
+		//Face 3
+		glm::vec3(+0.0f, +0.0f, +0.1f), //4
+		glm::vec3(+0.4f, +0.4f, +0.4f), //color
+		glm::vec3(+0.0f, -0.2f, +0.1f), //5
+		glm::vec3(+0.4f, +0.4f, +0.4f), //color
+		glm::vec3(+0.5f, -0.866f, +0.1f), //6
+		glm::vec3(+0.4f, +0.4f, +0.4f), //color
+
+		//Face 4
+		//4
+		glm::vec3(-0.5f, -0.866f, +0.1f), //7
+		glm::vec3(+0.4f, +0.4f, +0.4f), //color
+		//6
+
+		//Face 5
+		glm::vec3(+0.0f, +0.0f, +0.1f), //8
+		glm::vec3(+1.0f, +1.0f, +1.0f), //color
+		glm::vec3(-0.2f, +0.0f, +0.1f), //9
+		glm::vec3(+1.0f, +1.0f, +1.0f), //color
+		glm::vec3(-0.5f, -0.866f, +1.0f), //10
+		glm::vec3(+1.0f, +1.0f, +1.0f), //color
+		
+		//Face 6
+		//8
+		glm::vec3(+0.0f, +1.0f, +0.1f), //11
+		glm::vec3(+1.0f, +1.0f, +1.0f), //color
+	};
+
+	ret.numVertices = NUM_ARRAY_ELEMENTS(stackVerts);
+	ret.vertices = new Vertex[ret.numVertices];
+	memcpy(ret.vertices, stackVerts, sizeof(stackVerts));
+
+	unsigned short stackIndices[] = {
+		0, 1, 2, 0, 3, 1,
+		4, 5, 6, 4, 7, 5,
+		8, 9, 10, 8, 11, 9,
+	};
+	ret.numIndices = NUM_ARRAY_ELEMENTS(stackIndices);
+	ret.indices = new unsigned short[ret.numIndices];
+	memcpy(ret.indices, stackIndices, sizeof(stackIndices));
+
+	return ret;
+}
