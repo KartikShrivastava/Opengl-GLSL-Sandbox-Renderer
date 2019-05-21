@@ -8,22 +8,27 @@
 class VisualizerWindow : public QGLWidget
 {
 private:
-	//Camera camera;
+	Camera camera;
+	GLuint programID;
+	GLint fullTransformUniformLocation;
+	GLuint cubeVertexArrayObjectID;
+	GLuint starVertexArrayObjectID;
+
+	//void SendUpdatedDataToOpengl();
+	void SendDataToOpenGL();
+	bool CheckStatus(GLuint objectID, PFNGLGETSHADERIVPROC objectPropertyGetterFunc, PFNGLGETSHADERSOURCEPROC getInfoLogFunc, GLenum statusType);
+	bool CheckShaderStatus(GLuint shaderID);
+	bool CheckProgramStatus(GLuint programID);
+	std::string ReadShaderCode(const char* fileName);
+	void InstallShaders();
+	void SetupVertexArrrays();
+
 protected:
 	void initializeGL() override;
 	void paintGL() override;
-
-	void SendDataToOpenGL();
-	void SendUpdatedDataToOpengl();
-	void InstallShaders();
-	std::string ReadShaderCode(const char* fileName);
-	bool CheckStatus(GLuint objectID, PFNGLGETSHADERIVPROC objectPropertyGetterFunc, PFNGLGETSHADERSOURCEPROC getInfoLogFunc,
-		GLenum statusType);
-	bool CheckShaderStatus(GLuint shaderID);
-	bool CheckProgramStatus(GLuint programID);
-
 	void mouseMoveEvent(QMouseEvent*);
 	void keyPressEvent(QKeyEvent*);
+
 public:
 	~VisualizerWindow();
 };

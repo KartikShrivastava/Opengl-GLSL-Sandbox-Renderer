@@ -13,32 +13,49 @@
 #include "ShapeGenerator.h"
 #include "VisualizerWindow.h"
 
-GLuint programID;
-GLuint numIndices;
+GLuint cubeNumIndices;
+GLuint starNumIndices;
 
-Camera camera;
+GLuint cubeVertexBufferID;
+GLuint cubeIndexBufferID;
+GLuint starVertexBufferID;
+GLuint starIndexBufferID;
+
+//Camera camera;
 sf::Music music;
 #define N 10000
 
 void VisualizerWindow::SendDataToOpenGL() {
-	ShapeData shape = ShapeGenerator::MakeStar();
-	GLuint vertexBufferID;
-	glGenBuffers(1, &vertexBufferID);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+
+	//cube
+	ShapeData shape = ShapeGenerator::MakeCube();
+	glGenBuffers(1, &cubeVertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, cubeVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, shape.GetVertexBufferSize(), shape.vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-	glEnableVertexAttribArray(1);
-	//glVertexAttrib3f(1, 1, 0, 0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	
-	GLuint indexBufferID;
-	glGenBuffers(1, &indexBufferID);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
+	glGenBuffers(1, &cubeIndexBufferID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIndexBufferID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, shape.GetIndexBufferSize(), shape.indices, GL_STATIC_DRAW);
-	numIndices = shape.numIndices;
+	cubeNumIndices = shape.numIndices;
+	shape.CleanupData();
 
-	GLuint fullTransformMatrixBufferID;
+	//star
+	shape = ShapeGenerator::MakeStar();
+	glGenBuffers(1, &starVertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, starVertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, shape.GetVertexBufferSize(), shape.vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	glGenBuffers(1, &starIndexBufferID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, starIndexBufferID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, shape.GetIndexBufferSize(), shape.indices, GL_STATIC_DRAW);
+	starNumIndices = shape.numIndices;
+	shape.CleanupData();
+
+	/*GLuint fullTransformMatrixBufferID;
 	glGenBuffers(1, &fullTransformMatrixBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, fullTransformMatrixBufferID);
 
@@ -55,13 +72,60 @@ void VisualizerWindow::SendDataToOpenGL() {
 	glVertexAttribDivisor(3, 1);
 	glVertexAttribDivisor(4, 1);
 	glVertexAttribDivisor(5, 1);
-
 	shape.CleanupData();
+	*/
+
+}
+
+void VisualizerWindow::SetupVertexArrrays() {
+	glGenVertexArrays(1, &cubeVertexArrayObjectID);
+	glGenVertexArrays(1, &starVertexArrayObjectID);
+	
+	glBindVertexArray(cubeVertexArrayObjectID);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, cubeVertexBufferID);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIndexBufferID);
+
+	glBindVertexArray(starVertexArrayObjectID);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, starVertexBufferID);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, starIndexBufferID);
 }
 
 void VisualizerWindow::paintGL() {
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glViewport(0, 0, width(), height());
 
-	glm::mat4 projectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 10.0f);
+	glm::mat4 fullTransformMatrix;
+	glm::mat4 viewToProjectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 10.0f);
+	glm::mat4 worldToViewMatrix = camera.GetWorldToViewMatrix();
+	glm::mat4 worldToProjectionMatrix = viewToProjectionMatrix * worldToViewMatrix;
+
+	//cube
+	glBindVertexArray(cubeVertexArrayObjectID);
+	glm::mat4 cube1ModelToWorldMatrix =
+		glm::translate(glm::vec3(1.0f, 0.2f, -10.0f)) *
+		glm::rotate(glm::radians(120.f), glm::vec3(0.0f, 0.0f, 1.0f));
+	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
+	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+	glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
+
+	//star
+	glBindVertexArray(starVertexArrayObjectID);
+	glm::mat4 starModelToWorldMatrix =
+		glm::translate(glm::vec3(2.0f, 0.0f, -6.0f)) *
+		glm::rotate(glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	fullTransformMatrix = worldToProjectionMatrix * starModelToWorldMatrix;
+	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+	glDrawElements(GL_TRIANGLES, starNumIndices, GL_UNSIGNED_SHORT, 0);
+
+	/*glm::mat4 projectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 10.0f);
 	glm::mat4 fullTransforms[] = {
 		projectionMatrix * camera.GetWorldToViewMatrix() * glm::translate(glm::vec3(-1.0f, 0.0f, -6.15f))* glm::rotate(glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f)),
 		projectionMatrix * camera.GetWorldToViewMatrix() * glm::translate(glm::vec3(2.0f, 0.0f, -6.0f)) * glm::rotate(glm::radians(30.0f), glm::vec3(1.0f,0.0f,0.0f))
@@ -70,7 +134,7 @@ void VisualizerWindow::paintGL() {
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glViewport(0, 0, width(), height());
-	glDrawElementsInstanced(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, 0, 2);
+	glDrawElementsInstanced(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, 0, 2);*/
 }
 
 void VisualizerWindow::mouseMoveEvent(QMouseEvent* e) {			//this is an overloaded version of a Qt method
@@ -78,7 +142,7 @@ void VisualizerWindow::mouseMoveEvent(QMouseEvent* e) {			//this is an overloade
 	repaint();
 }
 
-void VisualizerWindow::keyPressEvent(QKeyEvent* e) {
+void VisualizerWindow::keyPressEvent(QKeyEvent* e) {			//this is an overloaded version of a Qt method
 	switch (e->key()) {
 		case Qt::Key::Key_W:
 			camera.MoveForward();
@@ -112,7 +176,7 @@ std::string VisualizerWindow::ReadShaderCode(const char* fileName) {
 }
 
 bool VisualizerWindow::CheckStatus(GLuint objectID, PFNGLGETSHADERIVPROC objectPropertyGetterFunc, PFNGLGETSHADERSOURCEPROC getInfoLogFunc,
-	GLenum statusType) 
+								   GLenum statusType) 
 {
 	GLint compileStatus;
 	objectPropertyGetterFunc(objectID, statusType, &compileStatus);
@@ -187,13 +251,15 @@ void TurnUpTheVolume() {
 }
 
 void VisualizerWindow::initializeGL() {
-	//setMinimumSize(800, 500);
+	setMinimumSize(800, 500);
 	setMouseTracking(true);
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 	SendDataToOpenGL();
+	SetupVertexArrrays();
 	InstallShaders();
 
+	fullTransformUniformLocation = glGetUniformLocation(programID, "fullTransformMatrix");
 	//TurnUpTheVolume();
 }
 
