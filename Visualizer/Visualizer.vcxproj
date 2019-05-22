@@ -42,6 +42,7 @@
     <ClInclude Include="src\DebugSlider.h" />
     <ClInclude Include="src\ShapeData.h" />
     <ClInclude Include="src\ShapeGenerator.h" />
+    <ClInclude Include="src\TeapotData.h" />
     <ClInclude Include="src\Vertex.h" />
     <ClInclude Include="src\VisualizerWidget.h" />
     <ClInclude Include="src\VisualizerWindow.h" />

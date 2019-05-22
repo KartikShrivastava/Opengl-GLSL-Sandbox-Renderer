@@ -11,6 +11,8 @@ private:
 	Camera camera;
 	GLuint programID;
 	GLint fullTransformUniformLocation;
+	GLuint theVertexBufferID;
+	GLuint theIndexBufferID;
 	GLuint cubeVertexArrayObjectID;
 	GLuint starVertexArrayObjectID;
 
@@ -21,7 +23,6 @@ private:
 	bool CheckProgramStatus(GLuint programID);
 	std::string ReadShaderCode(const char* fileName);
 	void InstallShaders();
-	void SetupVertexArrrays();
 
 protected:
 	void initializeGL() override;
