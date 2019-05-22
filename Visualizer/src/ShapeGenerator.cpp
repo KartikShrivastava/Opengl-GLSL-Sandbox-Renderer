@@ -315,12 +315,12 @@ ShapeData ShapeGenerator::MakePlane(int dimensions)
 	return ret;
 }
 
-ShapeData ShapeGenerator::makeTeapot(unsigned int tesselation, const glm::mat4& lidTransform)
+ShapeData ShapeGenerator::makeTeapot(glm::uint tesselation, const glm::mat4& lidTransform)
 {
 	ShapeData ret;
 
 	ret.numVertices = 32 * (tesselation + 1) * (tesselation + 1);
-	unsigned int faces = tesselation * tesselation * 32;
+	glm::uint faces = tesselation * tesselation * 32;
 	float* vertices = new float[ret.numVertices * 3];
 	float* normals = new float[ret.numVertices * 3];
 	float* textureCoordinates = new float[ret.numVertices * 2];

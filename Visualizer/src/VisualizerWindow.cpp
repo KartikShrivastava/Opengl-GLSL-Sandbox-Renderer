@@ -2,7 +2,7 @@
 #include <fstream>
 #include <memory>
 
-#include "SFML/Audio.hpp"
+//#include "SFML/Audio.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtx/transform.hpp"
 #include "QtGui/qmouseevent"
@@ -19,14 +19,14 @@ GLuint starNumIndices;
 GLuint starIndexBufferByteOffset;
 
 //Camera camera;
-sf::Music music;
+//sf::Music music;
 #define N 10000
 
 void VisualizerWindow::SendDataToOpenGL() {
 
 	//cube
-	ShapeData cube = ShapeGenerator::makeTeapot(2);
-	ShapeData star = ShapeGenerator::MakePlane(20);
+	ShapeData cube = ShapeGenerator::makeTeapot();
+	ShapeData star = ShapeGenerator::MakePlane();
 
 	glGenBuffers(1, &theVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
@@ -225,9 +225,9 @@ void GetAudioData() {
 }
 
 void TurnUpTheVolume() {
-	if (!music.openFromFile("sound2.wav"))
-		std::cout << "SFML error: Failed to load audio file" << std::endl;
-	music.play();
+	//if (!music.openFromFile("sound2.wav"))
+		//std::cout << "SFML error: Failed to load audio file" << std::endl;
+	//music.play();
 
 	//GetFFT();
 	//GetAudioData();
@@ -238,6 +238,9 @@ void VisualizerWindow::initializeGL() {
 	setMouseTracking(true);
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_FRONT);
+	//glFrontFace(GL_CW);
 	SendDataToOpenGL();
 	InstallShaders();
 

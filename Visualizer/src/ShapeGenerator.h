@@ -33,5 +33,5 @@ public:
 	static ShapeData MakeCube();
 	static ShapeData MakeStar();
 	static ShapeData MakePlane(int dimensions = 10);
-	static ShapeData makeTeapot(unsigned int tesselation = 10, const glm::mat4& lidTransform = glm::mat4());
+	static ShapeData makeTeapot(glm::uint tesselation = 10, const glm::mat4& lidTransform = glm::mat4());
 };
