@@ -15,7 +15,7 @@ Note: I've added all the dependencies because I think it is much easier for a be
 
 Added debug normals in iconic C.G. utah teapot:
 
-![](Snapshots/Capture.JPG)
+![](Snapshots/DebugNormal.JPG)
 
 First premitive shape:
 
