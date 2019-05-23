@@ -1,10 +1,14 @@
 #version 430
 
-in vec3 theColor;
-
 out vec4 dacolor;
+in vec3 thePosition;
+in vec3 theNormal;
+
+uniform vec3 diffuseLightPos;
 
 void main()
 {
-	dacolor = vec4(theColor, 1.0);
+	vec3 lightVector = normalize(diffuseLightPos - thePosition);
+	float brightness = dot(lightVector, theNormal);
+	dacolor = vec4(brightness, brightness, brightness, 1.0);
 };

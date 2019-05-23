@@ -13,6 +13,8 @@ private:
 	GLuint normalProgramID;	//programID for normalVertexShader
 	GLint fullTransformUniformLocation;
 	GLint ambientLightUniformLocation;
+	GLint diffuseLightPosUniformLocation;
+	GLuint modelToWorldMatrixUniformLocation;
 	GLint normalFullTransformUniformLocation;
 	GLuint theVertexBufferID;
 	GLuint theIndexBufferID;

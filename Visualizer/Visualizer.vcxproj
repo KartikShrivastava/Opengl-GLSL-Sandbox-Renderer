@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\FragmentShaderCode.glsl" />
+    <None Include="res\shaders\NormalFragmentShaderCode.glsl" />
     <None Include="res\shaders\NormalVertexShaderCode.glsl" />
     <None Include="res\shaders\VertexShaderCode.glsl" />
     <None Include="src\BackupProject\shaders\color.frag" />

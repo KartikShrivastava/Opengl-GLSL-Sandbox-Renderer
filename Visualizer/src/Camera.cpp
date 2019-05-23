@@ -4,8 +4,7 @@
 
 const float Camera::MOVEMENT_SPEED = 0.1f;
 
-Camera::Camera() : viewDirection(0.0f, 0.0f, -1.0f), UP(0.0f, 1.0f, 0.0f), position(0.0f, 0.0f, 0.0f) {
-
+Camera::Camera() : viewDirection(0.0f, -0.5f, -1.0f), UP(0.0f, 1.0f, 0.0f), position(0.0f, 5.0f, 5.0f) {
 }
 
 void Camera::MouseUpdate(const glm::vec2& newMousePosition) {

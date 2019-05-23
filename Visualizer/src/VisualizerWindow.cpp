@@ -26,8 +26,8 @@ GLuint cubeNormalIndexBufferByteOffset;
 
 void VisualizerWindow::SendDataToOpenGL() {
 
-	ShapeData cube = ShapeGenerator::makeTeapot(10);
-	ShapeData star = ShapeGenerator::MakePlane(100);
+	ShapeData cube = ShapeGenerator::MakeCube();
+	ShapeData star = ShapeGenerator::MakePlane(300);
 
 	NormalShapeData cubeNormal = ShapeGenerator::generateNormals(cube);
 
@@ -57,17 +57,21 @@ void VisualizerWindow::SendDataToOpenGL() {
 	glBindVertexArray(cubeVertexArrayObjectID);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
 
 	glBindVertexArray(starVertexArrayObjectID);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 3 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 6 * sizeof(GLfloat)));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
 
 	glBindVertexArray(cubeNormalVertexArrayObjectID);
@@ -114,15 +118,32 @@ void VisualizerWindow::paintGL() {
 	glm::mat4 worldToViewMatrix = camera.GetWorldToViewMatrix();
 	glm::mat4 worldToProjectionMatrix = viewToProjectionMatrix * worldToViewMatrix;
 
-	glUniform3f(ambientLightUniformLocation, 1.0f, 1.0f, 1.0f); //ambient light
+	//glUniform3f(ambientLightUniformLocation, 1.0f, 1.0f, 1.0f); //ambient light
+	glUniform3f(diffuseLightPosUniformLocation, 0.0f, 2.0f, 0.0f);
 
-	//cube
+	//translated cube
 	glUseProgram(programID);
 	glBindVertexArray(cubeVertexArrayObjectID);
 	glm::mat4 cube1ModelToWorldMatrix =
-		glm::translate(glm::vec3(1.0f, 0.2f, -5.0f)) * 
-		glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		glm::translate(glm::vec3(5.0f, 3.0f, -5.0f)) * 
+		glm::rotate(glm::radians(140.0f), glm::vec3(0.3f, 0.4f, 0.5f));
 	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
+	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
+	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+	glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
+
+	//normal
+	glUseProgram(normalProgramID);
+	glBindVertexArray(cubeNormalVertexArrayObjectID);
+	glUniformMatrix4fv(normalFullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+	glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
+
+	//centered cube
+	glUseProgram(programID);
+	glBindVertexArray(cubeVertexArrayObjectID);
+	cube1ModelToWorldMatrix = glm::mat4(1);
+	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
+	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
 	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
 	glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
 
@@ -136,13 +157,12 @@ void VisualizerWindow::paintGL() {
 	glUseProgram(programID);
 	glBindVertexArray(starVertexArrayObjectID);
 	glm::mat4 starModelToWorldMatrix =
-		glm::translate(glm::vec3(1.0f, 0.0f, -6.0f)) *
+		glm::translate(glm::vec3(0.0f, 0.0f, 0.0f)) *
 		glm::rotate(glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	fullTransformMatrix = worldToProjectionMatrix * starModelToWorldMatrix;
+	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &starModelToWorldMatrix[0][0]);
 	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
 	glDrawElements(GL_TRIANGLES, starNumIndices, GL_UNSIGNED_SHORT, (void*)starIndexBufferByteOffset);
-
-
 }
 
 void VisualizerWindow::mouseMoveEvent(QMouseEvent* e) {			//this is an overloaded version of a Qt method
@@ -213,27 +233,34 @@ bool VisualizerWindow::CheckProgramStatus(GLuint programID) {
 
 void VisualizerWindow::InstallShaders() {
 	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	GLuint normalVertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint normalVertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint normalFragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
 	const GLchar* adapter[1];
 	std::string temp = ReadShaderCode("res/shaders/VertexShaderCode.glsl");	//include this file at the location of executable
 	adapter[0] = temp.c_str();
 	glShaderSource(vertexShaderID, 1, adapter, 0);
 
-	temp = ReadShaderCode("res/shaders/NormalVertexShaderCode.glsl");
-	adapter[0] = temp.c_str();
-	glShaderSource(normalVertexShaderID, 1, adapter, 0);
-
 	temp = ReadShaderCode("res/shaders/FragmentShaderCode.glsl");
 	adapter[0] = temp.c_str();
 	glShaderSource(fragmentShaderID, 1, adapter, 0);
 
-	glCompileShader(vertexShaderID);
-	glCompileShader(normalVertexShaderID);
-	glCompileShader(fragmentShaderID);
+	temp = ReadShaderCode("res/shaders/NormalVertexShaderCode.glsl");
+	adapter[0] = temp.c_str();
+	glShaderSource(normalVertexShaderID, 1, adapter, 0);
 
-	if (!CheckShaderStatus(vertexShaderID) || !CheckShaderStatus(normalVertexShaderID) || !CheckShaderStatus(fragmentShaderID)) {
+	temp = ReadShaderCode("res/shaders/NormalFragmentShaderCode.glsl");
+	adapter[0] = temp.c_str();
+	glShaderSource(normalFragmentShaderID, 1, adapter, 0);
+
+	glCompileShader(vertexShaderID);
+	glCompileShader(fragmentShaderID);
+	glCompileShader(normalVertexShaderID);
+	glCompileShader(normalFragmentShaderID);
+
+	if (!CheckShaderStatus(vertexShaderID) || !CheckShaderStatus(fragmentShaderID) || 
+		!CheckShaderStatus(normalVertexShaderID) || !CheckShaderStatus(normalFragmentShaderID)) {
 		return;
 	}
 
@@ -244,15 +271,16 @@ void VisualizerWindow::InstallShaders() {
 
 	normalProgramID = glCreateProgram();
 	glAttachShader(normalProgramID, normalVertexShaderID);
-	glAttachShader(normalProgramID, fragmentShaderID);
+	glAttachShader(normalProgramID, normalFragmentShaderID);
 	glLinkProgram(normalProgramID);
 
 	if (!CheckProgramStatus(programID) || !CheckProgramStatus(normalProgramID))
 		return;
 
 	glDeleteShader(vertexShaderID);
-	glDeleteShader(normalVertexShaderID);
 	glDeleteShader(fragmentShaderID);
+	glDeleteShader(normalVertexShaderID);
+	glDeleteShader(normalFragmentShaderID);
 
 	//glUseProgram(programID);
 	//glUseProgram(normalProgramID);
@@ -282,11 +310,11 @@ void VisualizerWindow::initializeGL() {
 	SendDataToOpenGL();
 	InstallShaders();
 
-	glUseProgram(programID);
 	fullTransformUniformLocation = glGetUniformLocation(programID, "fullTransformMatrix");
 	ambientLightUniformLocation = glGetUniformLocation(programID, "ambientLight");
-
-	glUseProgram(normalProgramID);
+	diffuseLightPosUniformLocation = glGetUniformLocation(programID, "diffuseLightPos");
+	modelToWorldMatrixUniformLocation = glGetUniformLocation(programID, "modelToWorldMatrix");
+	
 	normalFullTransformUniformLocation = glGetUniformLocation(normalProgramID, "normalFullTransformMatrix");
 	
 	//TurnUpTheVolume();
