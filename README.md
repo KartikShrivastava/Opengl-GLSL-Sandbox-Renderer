@@ -13,4 +13,10 @@ Bits added so far:
 
 Note: I've added all the dependencies because I think it is much easier for a beginner to just clone and run it directly. Right now dependencies are built in Windows only.
 
+Added debug normals in iconic C.G. utah teapot:
+
+![](Snapshots/Capture.JPG)
+
+First premitive shape:
+
 ![](Snapshots/Capture.JPG)
