@@ -23,6 +23,7 @@
     <None Include="src\BackupProject\shaders\rgb.frag" />
     <None Include="res\shaders\FragmentShaderCode.glsl" />
     <None Include="res\shaders\VertexShaderCode.glsl" />
+    <None Include="res\shaders\NormalVertexShaderCode.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -70,6 +71,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\TeapotData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NormalVertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NormalShapeData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

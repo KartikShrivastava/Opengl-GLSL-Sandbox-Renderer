@@ -15,8 +15,10 @@
 
 GLuint cubeNumIndices;
 GLuint starNumIndices;
+GLuint cubeNormalNumIndices;
 
 GLuint starIndexBufferByteOffset;
+GLuint cubeNormalIndexBufferByteOffset;
 
 //Camera camera;
 //sf::Music music;
@@ -24,46 +26,58 @@ GLuint starIndexBufferByteOffset;
 
 void VisualizerWindow::SendDataToOpenGL() {
 
-	//cube
-	ShapeData cube = ShapeGenerator::makeTeapot();
-	ShapeData star = ShapeGenerator::MakePlane();
+	ShapeData cube = ShapeGenerator::makeTeapot(10);
+	ShapeData star = ShapeGenerator::MakePlane(100);
+
+	NormalShapeData cubeNormal = ShapeGenerator::generateNormals(cube);
 
 	glGenBuffers(1, &theVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize() + star.GetVertexBufferSize(), 0, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize() + star.GetVertexBufferSize() + cubeNormal.GetVertexBufferSize(), 0, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, cube.GetVertexBufferSize(), (void*)cube.vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize() , star.GetVertexBufferSize(), (void*)star.vertices);
+	glBufferSubData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize(), star.GetVertexBufferSize(), (void*)star.vertices);
+	glBufferSubData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize() + star.GetVertexBufferSize(), cubeNormal.GetVertexBufferSize(), (void*)cubeNormal.norVertices);
 	
 	glGenBuffers(1, &theIndexBufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize() + star.GetIndexBufferSize(), 0, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize() + star.GetIndexBufferSize() + cubeNormal.GetIndexBufferSize() , 0, GL_STATIC_DRAW);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, cube.GetIndexBufferSize(), (void*)cube.indices);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize(), star.GetIndexBufferSize(), (void*)star.indices);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize() + star.GetIndexBufferSize(), cubeNormal.GetIndexBufferSize(), (void*)cubeNormal.norIndices);
 	
 	cubeNumIndices = cube.numIndices;
 	starNumIndices = star.numIndices;
+	cubeNormalNumIndices = cubeNormal.norNumIndices;
 	
 	//Setup vertex arrays
 	glGenVertexArrays(1, &cubeVertexArrayObjectID);
 	glGenVertexArrays(1, &starVertexArrayObjectID);
+	glGenVertexArrays(1, &cubeNormalVertexArrayObjectID);
 
 	glBindVertexArray(cubeVertexArrayObjectID);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
 
 	glBindVertexArray(starVertexArrayObjectID);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 3 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 3 * sizeof(GLfloat)));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
+
+	glBindVertexArray(cubeNormalVertexArrayObjectID);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)(cube.GetVertexBufferSize() + star.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
 
 	starIndexBufferByteOffset = cube.GetIndexBufferSize();
+	cubeNormalIndexBufferByteOffset = cube.GetIndexBufferSize() + star.GetIndexBufferSize();
 
 	cube.CleanupData();
 	star.CleanupData();
@@ -96,27 +110,38 @@ void VisualizerWindow::paintGL() {
 	glViewport(0, 0, width(), height());
 
 	glm::mat4 fullTransformMatrix;
-	glm::mat4 viewToProjectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 30.0f);
+	glm::mat4 viewToProjectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 300.0f);
 	glm::mat4 worldToViewMatrix = camera.GetWorldToViewMatrix();
 	glm::mat4 worldToProjectionMatrix = viewToProjectionMatrix * worldToViewMatrix;
 
+	glUniform3f(ambientLightUniformLocation, 1.0f, 1.0f, 1.0f); //ambient light
+
 	//cube
+	glUseProgram(programID);
 	glBindVertexArray(cubeVertexArrayObjectID);
 	glm::mat4 cube1ModelToWorldMatrix =
 		glm::translate(glm::vec3(1.0f, 0.2f, -5.0f)) * 
-		glm::rotate(glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
+		glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
 	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
 	glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
 
+	//normal
+	glUseProgram(normalProgramID);
+	glBindVertexArray(cubeNormalVertexArrayObjectID);
+	glUniformMatrix4fv(normalFullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+	glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
+
 	//star
+	glUseProgram(programID);
 	glBindVertexArray(starVertexArrayObjectID);
 	glm::mat4 starModelToWorldMatrix =
-		glm::translate(glm::vec3(2.0f, 0.0f, -6.0f)) *
-		glm::rotate(glm::radians(00.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		glm::translate(glm::vec3(1.0f, 0.0f, -6.0f)) *
+		glm::rotate(glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	fullTransformMatrix = worldToProjectionMatrix * starModelToWorldMatrix;
 	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
 	glDrawElements(GL_TRIANGLES, starNumIndices, GL_UNSIGNED_SHORT, (void*)starIndexBufferByteOffset);
+
 
 }
 
@@ -178,8 +203,8 @@ bool VisualizerWindow::CheckStatus(GLuint objectID, PFNGLGETSHADERIVPROC objectP
 	return true;
 }
 
-bool VisualizerWindow::CheckShaderStatus(GLuint programID) {
-	return CheckStatus(programID, glGetShaderiv, glGetShaderInfoLog, GL_COMPILE_STATUS);
+bool VisualizerWindow::CheckShaderStatus(GLuint shaderID) {
+	return CheckStatus(shaderID, glGetShaderiv, glGetShaderInfoLog, GL_COMPILE_STATUS);
 }
 
 bool VisualizerWindow::CheckProgramStatus(GLuint programID) {
@@ -188,6 +213,7 @@ bool VisualizerWindow::CheckProgramStatus(GLuint programID) {
 
 void VisualizerWindow::InstallShaders() {
 	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint normalVertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
 	const GLchar* adapter[1];
@@ -195,14 +221,19 @@ void VisualizerWindow::InstallShaders() {
 	adapter[0] = temp.c_str();
 	glShaderSource(vertexShaderID, 1, adapter, 0);
 
+	temp = ReadShaderCode("res/shaders/NormalVertexShaderCode.glsl");
+	adapter[0] = temp.c_str();
+	glShaderSource(normalVertexShaderID, 1, adapter, 0);
+
 	temp = ReadShaderCode("res/shaders/FragmentShaderCode.glsl");
 	adapter[0] = temp.c_str();
 	glShaderSource(fragmentShaderID, 1, adapter, 0);
 
 	glCompileShader(vertexShaderID);
+	glCompileShader(normalVertexShaderID);
 	glCompileShader(fragmentShaderID);
 
-	if (!CheckShaderStatus(vertexShaderID) || !CheckShaderStatus(fragmentShaderID)) {
+	if (!CheckShaderStatus(vertexShaderID) || !CheckShaderStatus(normalVertexShaderID) || !CheckShaderStatus(fragmentShaderID)) {
 		return;
 	}
 
@@ -211,13 +242,20 @@ void VisualizerWindow::InstallShaders() {
 	glAttachShader(programID, fragmentShaderID);
 	glLinkProgram(programID);
 
-	if (!CheckProgramStatus(programID))
+	normalProgramID = glCreateProgram();
+	glAttachShader(normalProgramID, normalVertexShaderID);
+	glAttachShader(normalProgramID, fragmentShaderID);
+	glLinkProgram(normalProgramID);
+
+	if (!CheckProgramStatus(programID) || !CheckProgramStatus(normalProgramID))
 		return;
 
 	glDeleteShader(vertexShaderID);
+	glDeleteShader(normalVertexShaderID);
 	glDeleteShader(fragmentShaderID);
 
-	glUseProgram(programID);
+	//glUseProgram(programID);
+	//glUseProgram(normalProgramID);
 }
 
 void GetAudioData() {
@@ -244,7 +282,13 @@ void VisualizerWindow::initializeGL() {
 	SendDataToOpenGL();
 	InstallShaders();
 
+	glUseProgram(programID);
 	fullTransformUniformLocation = glGetUniformLocation(programID, "fullTransformMatrix");
+	ambientLightUniformLocation = glGetUniformLocation(programID, "ambientLight");
+
+	glUseProgram(normalProgramID);
+	normalFullTransformUniformLocation = glGetUniformLocation(normalProgramID, "normalFullTransformMatrix");
+	
 	//TurnUpTheVolume();
 }
 

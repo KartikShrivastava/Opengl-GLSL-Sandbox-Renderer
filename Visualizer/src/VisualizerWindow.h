@@ -10,11 +10,15 @@ class VisualizerWindow : public QGLWidget
 private:
 	Camera camera;
 	GLuint programID;
+	GLuint normalProgramID;	//programID for normalVertexShader
 	GLint fullTransformUniformLocation;
+	GLint ambientLightUniformLocation;
+	GLint normalFullTransformUniformLocation;
 	GLuint theVertexBufferID;
 	GLuint theIndexBufferID;
 	GLuint cubeVertexArrayObjectID;
 	GLuint starVertexArrayObjectID;
+	GLuint cubeNormalVertexArrayObjectID;
 
 	//void SendUpdatedDataToOpengl();
 	void SendDataToOpenGL();

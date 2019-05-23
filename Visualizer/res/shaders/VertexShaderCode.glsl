@@ -5,6 +5,7 @@ in layout(location = 1) vec3 vertexColor;
 
 //in layout(location = 2) mat4 fullTransformMatrix;
 uniform mat4 fullTransformMatrix;
+uniform vec3 ambientLight;
 
 out vec3 theColor;
 
@@ -12,5 +13,5 @@ void main()
 {
 	vec4 v = vec4(position, 1.0);
 	gl_Position = fullTransformMatrix * v;
-	theColor = vertexColor;
+	theColor = vertexColor * ambientLight;
 }

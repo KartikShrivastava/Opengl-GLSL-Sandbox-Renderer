@@ -10,12 +10,15 @@ ShapeData ShapeGenerator::MakeTriangle()
 	Vertex vertices[] = {
 		glm::vec3(-1.0f, -1.0f, +0.0f),
 		glm::vec3(+1.0f, +0.0f, +0.0f),
+		glm::vec3(+1.0f, +0.0f, +1.0f),
 
 		glm::vec3(+0.0f, +1.0f, +0.0f),
 		glm::vec3(+0.0f, +1.0f, +0.0f),
+		glm::vec3(+1.0f, +0.0f, +1.0f),
 
 		glm::vec3(+1.0f, -1.0f, +0.0f),
 		glm::vec3(+0.0f, +0.0f, +1.0f),
+		glm::vec3(+1.0f, +0.0f, +1.0f),
 	};
 
 	shapeData.numVertices = NUM_ARRAY_ELEMENTS(vertices);
@@ -38,82 +41,82 @@ ShapeData ShapeGenerator::MakeCube() {
 	Vertex stackVerts[] =
 	{
 		glm::vec3(-1.0f, +1.0f, +1.0f),  // 0
-		glm::vec3(+0.8f, +0.0f, +0.0f),	// Color
-		//glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
+		glm::vec3(+0.8f, +0.0f, +0.0f),	 // Color
+		glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
 		glm::vec3(+1.0f, +1.0f, +1.0f),  // 1
-		glm::vec3(+0.8f, +0.0f, +0.0f),	// Color
-		//glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
+		glm::vec3(+0.8f, +0.0f, +0.0f),	 // Color
+		glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
 		glm::vec3(+1.0f, +1.0f, -1.0f),  // 2
-		glm::vec3(+0.8f, +0.0f, +0.0f),	// Color
-		//glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
+		glm::vec3(+0.8f, +0.0f, +0.0f),	 // Color
+		glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
 		glm::vec3(-1.0f, +1.0f, -1.0f),  // 3
-		glm::vec3(+0.8f, +0.0f, +0.0f),	// Color
-		//glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
+		glm::vec3(+0.8f, +0.0f, +0.0f),	 // Color
+		glm::vec3(+0.0f, +1.0f, +0.0f),  // Normal
 		
 		glm::vec3(-1.0f, +1.0f, -1.0f),  // 4
 		glm::vec3(+1.0f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
 		glm::vec3(+1.0f, +1.0f, -1.0f),  // 5
 		glm::vec3(+1.0f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
 		glm::vec3(+1.0f, -1.0f, -1.0f),  // 6
 		glm::vec3(+1.0f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
 		glm::vec3(-1.0f, -1.0f, -1.0f),  // 7
 		glm::vec3(+1.0f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, -1.0f),  // Normal
 		
 		glm::vec3(+1.0f, +1.0f, -1.0f),  // 8
 		glm::vec3(+0.5f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
 		glm::vec3(+1.0f, +1.0f, +1.0f),  // 9
 		glm::vec3(+0.5f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
 		glm::vec3(+1.0f, -1.0f, +1.0f),  // 10
 		glm::vec3(+0.5f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
 		glm::vec3(+1.0f, -1.0f, -1.0f),  // 11
 		glm::vec3(+0.5f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(+1.0f, +0.0f, +0.0f),  // Normal
 		
 		glm::vec3(-1.0f, +1.0f, +1.0f),  // 12
 		glm::vec3(+0.7f, +0.0f, +0.0f),  // Color
-		//glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
 		glm::vec3(-1.0f, +1.0f, -1.0f),  // 13
 		glm::vec3(+0.7f, +0.0f, +0.0f),  // Color
-		//glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
 		glm::vec3(-1.0f, -1.0f, -1.0f),  // 14
 		glm::vec3(+0.7f, +0.0f, +0.0f),  // Color
-		//glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
 		glm::vec3(-1.0f, -1.0f, +1.0f),  // 15
 		glm::vec3(+0.7f, +0.0f, +0.0f),  // Color
-		//glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
+		glm::vec3(-1.0f, +0.0f, +0.0f),  // Normal
 		
 		glm::vec3(+1.0f, +1.0f, +1.0f),  // 16
 		glm::vec3(+0.4f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
 		glm::vec3(-1.0f, +1.0f, +1.0f),  // 17
 		glm::vec3(+0.4f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
 		glm::vec3(-1.0f, -1.0f, +1.0f),  // 18
 		glm::vec3(+0.4f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
 		glm::vec3(+1.0f, -1.0f, +1.0f),  // 19
 		glm::vec3(+0.4f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
+		glm::vec3(+0.0f, +0.0f, +1.0f),  // Normal
 		
 		glm::vec3(+1.0f, -1.0f, -1.0f),  // 20
 		glm::vec3(+0.6f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
+		glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
 		glm::vec3(-1.0f, -1.0f, -1.0f),  // 21
 		glm::vec3(+0.6f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
+		glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
 		glm::vec3(-1.0f, -1.0f, +1.0f),  // 22
 		glm::vec3(+0.6f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
+		glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
 		glm::vec3(+1.0f, -1.0f, +1.0f),  // 23
 		glm::vec3(+0.6f, +0.0f, +0.0f),  // Color
-		//glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
+		glm::vec3(+0.0f, -1.0f, +0.0f),  // Normal
 	};
 
 	ret.numVertices = NUM_ARRAY_ELEMENTS(stackVerts);
@@ -135,6 +138,7 @@ ShapeData ShapeGenerator::MakeCube() {
 	return ret;
 }
 
+//TODO: add normals for star
 ShapeData ShapeGenerator::MakeStar() {
 	ShapeData ret;
 	Vertex stackVerts[] = {
@@ -277,6 +281,7 @@ ShapeData ShapeGenerator::makePlaneVerts(int dimensions)
 			ret.vertices[i*dimensions + j].position.x = (float)(j - mid);
 			ret.vertices[i*dimensions + j].position.y = 0;
 			ret.vertices[i*dimensions + j].position.z = (float)(i - mid);
+			ret.vertices[i*dimensions + j].normal = glm::vec3(0, 1, 0);
 			ret.vertices[i*dimensions + j].color = glm::vec3(0.8f, 0.8f, 0.9f);// RandomColor();
 		}
 	}
@@ -338,6 +343,9 @@ ShapeData ShapeGenerator::makeTeapot(glm::uint tesselation, const glm::mat4& lid
 		v.position.x = vertices[i * 3 + 0];
 		v.position.y = vertices[i * 3 + 1];
 		v.position.z = vertices[i * 3 + 2];
+		v.normal.x = normals[i * 3 + 0];
+		v.normal.y = normals[i * 3 + 1];
+		v.normal.z = normals[i * 3 + 2];
 		v.color = RandomColor();
 	}
 	return ret;
@@ -553,4 +561,26 @@ glm::vec3 ShapeGenerator::evaluateNormal(int gridU, int gridV, float *B, float *
 		}
 	}
 	return glm::normalize(glm::cross(du, dv));
+}
+
+NormalShapeData ShapeGenerator::generateNormals(const ShapeData & data)
+{
+	NormalShapeData ret;
+	ret.norNumVertices = data.numVertices * 2;
+	ret.norVertices = new NormalVertex[ret.norNumVertices];
+	data.vertices;
+	//assign normals (each normal is made up of two vertex position : base vertex vector position + normal unit vector position
+	for (int i = 0; i < data.numVertices; i++) {
+		glm::uint index = i * 2;
+		ret.norVertices[index].position = data.vertices[i].position;
+		ret.norVertices[index+1].position = data.vertices[i].position + data.vertices[i].normal;
+	}
+
+	//assing indices
+	ret.norNumIndices = ret.norNumVertices;
+	ret.norIndices = new GLushort[ret.norNumIndices];
+	for (int i = 0; i < ret.norNumVertices; i++) {
+		ret.norIndices[i] = i;
+	}
+	return ret;
 }

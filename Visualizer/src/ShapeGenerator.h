@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ShapeData.h"
+#include "NormalShapeData.h"
 
 class ShapeGenerator {
 	static ShapeData makePlaneVerts(int dimensions);
@@ -34,4 +35,5 @@ public:
 	static ShapeData MakeStar();
 	static ShapeData MakePlane(int dimensions = 10);
 	static ShapeData makeTeapot(glm::uint tesselation = 10, const glm::mat4& lidTransform = glm::mat4());
+	static NormalShapeData generateNormals(const ShapeData& data);
 };
