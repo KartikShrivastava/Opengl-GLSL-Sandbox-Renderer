@@ -126,7 +126,7 @@ void VisualizerWindow::paintGL() {
 	glBindVertexArray(cubeVertexArrayObjectID);
 	glm::mat4 cube1ModelToWorldMatrix =
 		glm::translate(glm::vec3(5.0f, 3.0f, -5.0f)) * 
-		glm::rotate(glm::radians(140.0f), glm::vec3(0.3f, 0.4f, 0.5f));
+		glm::rotate(glm::radians(0.0f), glm::vec3(0.3f, 0.4f, 0.5f));
 	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
 	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
 	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);

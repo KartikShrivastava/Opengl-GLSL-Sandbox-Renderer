@@ -15,7 +15,7 @@ void main()
 {
 	vec4 v = vec4(position, 1.0);
 	gl_Position = fullTransformMatrix * v;
-	thePosition = vec3(modelToWorldMatrix * v);
-	//theNormal = vec3(modelToWorldMatrix * vec4(normal,0));
-	theNormal = normal;
+	thePosition = vec3(v);	//apply the vector addition for diffuse light on world coordinates not just model coordinates
+	theNormal = vec3(modelToWorldMatrix * vec4(normal,0));	//apply rotation to normals (rotation issue with diffuse)
+	//theNormal = normal;
 }

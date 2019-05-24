@@ -10,12 +10,15 @@ Bits added so far:
 -Camera class
 -Qt mouse event
 -Qt key press event
+-Added plane, utah teapot, ninja star and cube as primitive shapes
+-Ambient lighting
+-More accurate diffuse lighting
 
 Note: I've added all the dependencies because I think it is much easier for a beginner to just clone and run it directly. Right now dependencies are built in Windows only.
 
 Fixed diffuse light issue with rotated and translated objects:
 
-![](Snapshots/DiffuseLight.JPG)
+![](Snapshots/DiffuseLighting.JPG)
 
 Added debug normals in iconic C.G. utah teapot:
 
