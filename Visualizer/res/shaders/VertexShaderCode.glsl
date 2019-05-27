@@ -1,21 +1,18 @@
 #version 430
 
-in layout(location = 0) vec3 position;
+in layout(location = 0) vec4 vertexPositionModel;
 in layout(location = 1) vec3 vertexColor;
-in layout(location = 2) vec3 normal;
-uniform vec3 ambientLight;
+in layout(location = 2) vec3 normalModel;
 
-uniform mat4 fullTransformMatrix;
-uniform mat4 modelToWorldMatrix;
+uniform mat4 modelToProjMat;
+uniform mat4 modelToWorldMat;
 
-out vec3 thePosition;
-out vec3 theNormal;
+out vec3 vertexPosWorld;
+out vec3 normalWorld;
 
 void main()
 {
-	vec4 v = vec4(position, 1.0);
-	gl_Position = fullTransformMatrix * v;
-	thePosition = vec3(v);	//apply the vector addition for diffuse light on world coordinates not just model coordinates
-	theNormal = vec3(modelToWorldMatrix * vec4(normal,0));	//apply rotation to normals (rotation issue with diffuse)
-	//theNormal = normal;
+	gl_Position = modelToProjMat * vertexPositionModel;
+	vertexPosWorld = vec3(modelToWorldMat * vertexPositionModel);			//apply the vector addition for diffuse light on world coordinates not just model coordinates
+	normalWorld = vec3(modelToWorldMat * vec4(normalModel,0));					//apply rotation to normals (rotation issue with diffuse)
 }

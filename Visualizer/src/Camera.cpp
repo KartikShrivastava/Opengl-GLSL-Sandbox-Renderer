@@ -47,3 +47,7 @@ void Camera::MoveUp() {
 void Camera::MoveDown() {
 	position += -MOVEMENT_SPEED * UP;
 }
+
+glm::vec3 Camera::GetPosition() {
+	return position;
+}

@@ -11,11 +11,12 @@ private:
 	Camera camera;
 	GLuint programID;
 	GLuint normalProgramID;	//programID for normalVertexShader
-	GLint fullTransformUniformLocation;
-	GLint ambientLightUniformLocation;
-	GLint diffuseLightPosUniformLocation;
-	GLuint modelToWorldMatrixUniformLocation;
-	GLint normalFullTransformUniformLocation;
+	GLint modelToProjMatUniformLoc;
+	GLint modelToWorldMatUniformLoc;
+	GLint ambientLightUniformLoc;
+	GLint diffuseLightPosWorldUniformLoc;
+	GLint normalShaderModelToProjMatUniformLoc;
+	GLint eyePosWorldUniformLocation;
 	GLuint theVertexBufferID;
 	GLuint theIndexBufferID;
 	GLuint cubeVertexArrayObjectID;

@@ -333,7 +333,7 @@ ShapeData ShapeGenerator::makeTeapot(glm::uint tesselation, const glm::mat4& lid
 	ret.indices = new unsigned short[ret.numIndices];
 
 	generatePatches(vertices, normals, textureCoordinates, ret.indices, tesselation);
-	moveLid(tesselation, vertices, lidTransform);
+	//moveLid(tesselation, vertices, lidTransform);
 
 	// Adapt/convert their data format to mine
 	ret.vertices = new Vertex[ret.numVertices];

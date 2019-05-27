@@ -20,4 +20,5 @@ public:
 	void StrafeRight();
 	void MoveUp();
 	void MoveDown();
+	glm::vec3 GetPosition();
 };

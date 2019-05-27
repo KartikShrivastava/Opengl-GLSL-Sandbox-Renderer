@@ -26,28 +26,29 @@ GLuint cubeNormalIndexBufferByteOffset;
 
 void VisualizerWindow::SendDataToOpenGL() {
 
-	ShapeData cube = ShapeGenerator::MakeCube();
-	ShapeData star = ShapeGenerator::MakePlane(300);
+	ShapeData shape1 = ShapeGenerator::makeTeapot();
+	ShapeData shape2 = ShapeGenerator::MakePlane(100);
+	ShapeData shape3 = ShapeGenerator::MakeCube();
 
-	NormalShapeData cubeNormal = ShapeGenerator::generateNormals(cube);
+	NormalShapeData shape1Normal = ShapeGenerator::generateNormals(shape1);
 
 	glGenBuffers(1, &theVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize() + star.GetVertexBufferSize() + cubeNormal.GetVertexBufferSize(), 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, cube.GetVertexBufferSize(), (void*)cube.vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize(), star.GetVertexBufferSize(), (void*)star.vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, cube.GetVertexBufferSize() + star.GetVertexBufferSize(), cubeNormal.GetVertexBufferSize(), (void*)cubeNormal.norVertices);
+	glBufferData(GL_ARRAY_BUFFER, shape1.GetVertexBufferSize() + shape2.GetVertexBufferSize() + shape1Normal.GetVertexBufferSize(), 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, shape1.GetVertexBufferSize(), (void*)shape1.vertices);
+	glBufferSubData(GL_ARRAY_BUFFER, shape1.GetVertexBufferSize(), shape2.GetVertexBufferSize(), (void*)shape2.vertices);
+	glBufferSubData(GL_ARRAY_BUFFER, shape1.GetVertexBufferSize() + shape2.GetVertexBufferSize(), shape1Normal.GetVertexBufferSize(), (void*)shape1Normal.norVertices);
 	
 	glGenBuffers(1, &theIndexBufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize() + star.GetIndexBufferSize() + cubeNormal.GetIndexBufferSize() , 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, cube.GetIndexBufferSize(), (void*)cube.indices);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize(), star.GetIndexBufferSize(), (void*)star.indices);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, cube.GetIndexBufferSize() + star.GetIndexBufferSize(), cubeNormal.GetIndexBufferSize(), (void*)cubeNormal.norIndices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, shape1.GetIndexBufferSize() + shape2.GetIndexBufferSize() + shape1Normal.GetIndexBufferSize() , 0, GL_STATIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, shape1.GetIndexBufferSize(), (void*)shape1.indices);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, shape1.GetIndexBufferSize(), shape2.GetIndexBufferSize(), (void*)shape2.indices);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, shape1.GetIndexBufferSize() + shape2.GetIndexBufferSize(), shape1Normal.GetIndexBufferSize(), (void*)shape1Normal.norIndices);
 	
-	cubeNumIndices = cube.numIndices;
-	starNumIndices = star.numIndices;
-	cubeNormalNumIndices = cubeNormal.norNumIndices;
+	cubeNumIndices = shape1.numIndices;
+	starNumIndices = shape2.numIndices;
+	cubeNormalNumIndices = shape1Normal.norNumIndices;
 	
 	//Setup vertex arrays
 	glGenVertexArrays(1, &cubeVertexArrayObjectID);
@@ -69,22 +70,23 @@ void VisualizerWindow::SendDataToOpenGL() {
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 3 * sizeof(GLfloat)));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(cube.GetVertexBufferSize() + 6 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(shape1.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(shape1.GetVertexBufferSize() + 3 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(shape1.GetVertexBufferSize() + 6 * sizeof(GLfloat)));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
 
 	glBindVertexArray(cubeNormalVertexArrayObjectID);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, theVertexBufferID);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)(cube.GetVertexBufferSize() + star.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)(shape1.GetVertexBufferSize() + shape2.GetVertexBufferSize() + 0 * sizeof(GLfloat)));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theIndexBufferID);
 
-	starIndexBufferByteOffset = cube.GetIndexBufferSize();
-	cubeNormalIndexBufferByteOffset = cube.GetIndexBufferSize() + star.GetIndexBufferSize();
+	starIndexBufferByteOffset = shape1.GetIndexBufferSize();
+	cubeNormalIndexBufferByteOffset = shape1.GetIndexBufferSize() + shape2.GetIndexBufferSize();
 
-	cube.CleanupData();
-	star.CleanupData();
+	shape1.CleanupData();
+	shape2.CleanupData();
+	shape1Normal.CleanupData();
 
 	/*	INSTANCING CODE
 	GLuint fullTransformMatrixBufferID;
@@ -113,56 +115,62 @@ void VisualizerWindow::paintGL() {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glViewport(0, 0, width(), height());
 
-	glm::mat4 fullTransformMatrix;
+	glm::mat4 modelToProjMat;
 	glm::mat4 viewToProjectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 300.0f);
 	glm::mat4 worldToViewMatrix = camera.GetWorldToViewMatrix();
 	glm::mat4 worldToProjectionMatrix = viewToProjectionMatrix * worldToViewMatrix;
 
-	//glUniform3f(ambientLightUniformLocation, 1.0f, 1.0f, 1.0f); //ambient light
-	glUniform3f(diffuseLightPosUniformLocation, 0.0f, 2.0f, 0.0f);
+	glUniform3f(diffuseLightPosWorldUniformLoc, 0.0f, 2.0f, 0.0f);
+	glUniform3fv(eyePosWorldUniformLocation, 1, &camera.GetPosition()[0]);
+	glUniform4f(ambientLightUniformLoc, 0.1f, 0.1f, 0.1f, 1.0f); //ambient light
 
 	//translated cube
 	glUseProgram(programID);
 	glBindVertexArray(cubeVertexArrayObjectID);
 	glm::mat4 cube1ModelToWorldMatrix =
 		glm::translate(glm::vec3(5.0f, 3.0f, -5.0f)) * 
-		glm::rotate(glm::radians(0.0f), glm::vec3(0.3f, 0.4f, 0.5f));
-	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
-	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
-	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+		glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelToProjMat = worldToProjectionMatrix * cube1ModelToWorldMatrix;
+	glUniformMatrix4fv(modelToWorldMatUniformLoc, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
+	glUniformMatrix4fv(modelToProjMatUniformLoc, 1, GL_FALSE, &modelToProjMat[0][0]);
 	glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
 
 	//normal
-	glUseProgram(normalProgramID);
-	glBindVertexArray(cubeNormalVertexArrayObjectID);
-	glUniformMatrix4fv(normalFullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
-	glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
+	//glUseProgram(normalProgramID);
+	//glBindVertexArray(cubeNormalVertexArrayObjectID);
+	//glUniformMatrix4fv(normalShaderModelToProjMatUniformLoc, 1, GL_FALSE, &modelToProjMat[0][0]);
+	//glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
 
 	//centered cube
-	glUseProgram(programID);
+	//glUseProgram(programID);
 	glBindVertexArray(cubeVertexArrayObjectID);
 	cube1ModelToWorldMatrix = glm::mat4(1);
-	fullTransformMatrix = worldToProjectionMatrix * cube1ModelToWorldMatrix;
-	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
-	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
-	glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
+	modelToProjMat = worldToProjectionMatrix * cube1ModelToWorldMatrix;
+	glUniformMatrix4fv(modelToWorldMatUniformLoc, 1, GL_FALSE, &cube1ModelToWorldMatrix[0][0]);
+	glUniformMatrix4fv(modelToProjMatUniformLoc, 1, GL_FALSE, &modelToProjMat[0][0]);
+	//glDrawElements(GL_TRIANGLES, cubeNumIndices, GL_UNSIGNED_SHORT, 0);
 
 	//normal
-	glUseProgram(normalProgramID);
-	glBindVertexArray(cubeNormalVertexArrayObjectID);
-	glUniformMatrix4fv(normalFullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
-	glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
+	//glUseProgram(normalProgramID);
+	//glBindVertexArray(cubeNormalVertexArrayObjectID);
+	//glUniformMatrix4fv(normalShaderModelToProjMatUniformLoc, 1, GL_FALSE, &modelToProjMat[0][0]);
+	//glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
 
 	//star
-	glUseProgram(programID);
+	//glUseProgram(programID);
 	glBindVertexArray(starVertexArrayObjectID);
 	glm::mat4 starModelToWorldMatrix =
 		glm::translate(glm::vec3(0.0f, 0.0f, 0.0f)) *
 		glm::rotate(glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	fullTransformMatrix = worldToProjectionMatrix * starModelToWorldMatrix;
-	glUniformMatrix4fv(modelToWorldMatrixUniformLocation, 1, GL_FALSE, &starModelToWorldMatrix[0][0]);
-	glUniformMatrix4fv(fullTransformUniformLocation, 1, GL_FALSE, &fullTransformMatrix[0][0]);
+	modelToProjMat = worldToProjectionMatrix * starModelToWorldMatrix;
+	glUniformMatrix4fv(modelToWorldMatUniformLoc, 1, GL_FALSE, &starModelToWorldMatrix[0][0]);
+	glUniformMatrix4fv(modelToProjMatUniformLoc, 1, GL_FALSE, &modelToProjMat[0][0]);
 	glDrawElements(GL_TRIANGLES, starNumIndices, GL_UNSIGNED_SHORT, (void*)starIndexBufferByteOffset);
+
+	//glUseProgram(normalProgramID);
+	//glBindVertexArray(cubeNormalVertexArrayObjectID);
+	//glUniformMatrix4fv(normalShaderModelToProjMatUniformLoc, 1, GL_FALSE, &modelToProjMat[0][0]);
+	//glDrawElements(GL_LINES, cubeNormalNumIndices, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexBufferByteOffset);
 }
 
 void VisualizerWindow::mouseMoveEvent(QMouseEvent* e) {			//this is an overloaded version of a Qt method
@@ -310,12 +318,13 @@ void VisualizerWindow::initializeGL() {
 	SendDataToOpenGL();
 	InstallShaders();
 
-	fullTransformUniformLocation = glGetUniformLocation(programID, "fullTransformMatrix");
-	ambientLightUniformLocation = glGetUniformLocation(programID, "ambientLight");
-	diffuseLightPosUniformLocation = glGetUniformLocation(programID, "diffuseLightPos");
-	modelToWorldMatrixUniformLocation = glGetUniformLocation(programID, "modelToWorldMatrix");
+	modelToProjMatUniformLoc = glGetUniformLocation(programID, "modelToProjMat");
+	ambientLightUniformLoc = glGetUniformLocation(programID, "ambientLight");
+	diffuseLightPosWorldUniformLoc = glGetUniformLocation(programID, "diffuseLightPosWorld");
+	modelToWorldMatUniformLoc = glGetUniformLocation(programID, "modelToWorldMat");
+	eyePosWorldUniformLocation = glGetUniformLocation(programID, "eyePosWorld");
 	
-	normalFullTransformUniformLocation = glGetUniformLocation(normalProgramID, "normalFullTransformMatrix");
+	normalShaderModelToProjMatUniformLoc = glGetUniformLocation(normalProgramID, "normalShaderModelToProjMat");
 	
 	//TurnUpTheVolume();
 }
