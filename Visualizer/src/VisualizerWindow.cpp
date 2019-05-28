@@ -91,12 +91,12 @@ void VisualizerWindow::paintGL() {
 
 }
 
-void VisualizerWindow::mouseMoveEvent(QMouseEvent* e) {			//this is an overloaded version of a Qt method
+void VisualizerWindow::mouseMoveEvent(QMouseEvent* e) {
 	camera.MouseUpdate(glm::vec2(e->x(), e->y()));
 	repaint();
 }
 
-void VisualizerWindow::keyPressEvent(QKeyEvent* e) {			//this is an overloaded version of a Qt method
+void VisualizerWindow::keyPressEvent(QKeyEvent* e) {
 	switch (e->key()) {
 		case Qt::Key::Key_W:
 			camera.MoveForward();

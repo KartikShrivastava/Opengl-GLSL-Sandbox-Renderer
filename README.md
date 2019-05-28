@@ -13,8 +13,13 @@ Bits added so far:
 -Added plane, utah teapot, ninja star and cube as primitive shapes
 -Ambient lighting
 -More accurate diffuse lighting
+-Specular lighting
 
 Note: I've added all the dependencies because I think it is much easier for a beginner to just clone and run it directly. Right now dependencies are built in Windows only.
+
+Abstracted opengl into classes, made project scalable:
+
+![](Snapshots/RefactoredCode.JPG)
 
 Fixed diffuse light issue with rotated and translated objects:
 
