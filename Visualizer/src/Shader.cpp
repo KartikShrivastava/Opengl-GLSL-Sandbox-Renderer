@@ -6,9 +6,12 @@
 #include "Shader.h"
 #include "CheckGLErrors.h"
 
-Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath) : m_RendererID(0) {
-	m_RendererID = CreateShader(ParseShader(vertexFilePath), ParseShader(fragmentFilePath));
+Shader::Shader() : m_RendererID(0) {
 }
+
+//Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath) : m_RendererID(0) {
+//	m_RendererID = CreateShader(ParseShader(vertexFilePath), ParseShader(fragmentFilePath));
+//}
 
 //Shader::~Shader(){
 //	std::cout << "Shader destructor called" << std::endl;
@@ -47,7 +50,26 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& shader)
 	return id;
 }
 
-unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader){
+void Shader::CheckProgramStatus(GLuint programID)
+{
+	GLint status;
+	GLCall(glGetProgramiv(programID, GL_LINK_STATUS, &status));
+	if (status != GL_TRUE) {
+		int length;
+		GLCall(glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &length));
+		char* message = (char*)alloca(length * sizeof(char));
+		int len;
+		GLCall(glGetProgramInfoLog(programID, length, &len, message));
+		std::cout << "Program compilation failed:\n" << message << std::endl;
+		glDeleteShader(programID);
+	}
+}
+
+void Shader::CreateShader(const std::string& vertexShaderFile, const std::string& fragmentShaderFile){
+
+	std::string vertexShader = ParseShader(vertexShaderFile);
+	std::string fragmentShader = ParseShader(fragmentShaderFile);
+
 	GLCall(unsigned int program = glCreateProgram());
 	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -57,13 +79,14 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
 
 	GLCall(glLinkProgram(program));
 	GLCall(glValidateProgram(program));
+	CheckProgramStatus(program);
 
 	GLCall(glDeleteShader(vs));
-	GLCall(glDetachShader(program, vs));
+	//GLCall(glDetachShader(program, vs));
 	GLCall(glDeleteShader(fs));
-	GLCall(glDetachShader(program, fs));
+	//GLCall(glDetachShader(program, fs));
 
-	return program;
+	m_RendererID = program;
 }
 
 void Shader::Bind() const{

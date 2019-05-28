@@ -1,7 +1,8 @@
 #pragma once
 
 #include <GL/glew.h>
-#include "Vertex.h"
+
+struct Vertex;
 
 class VertexBuffer {
 private:

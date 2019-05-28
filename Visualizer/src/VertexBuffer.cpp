@@ -1,7 +1,6 @@
 #include "VertexBuffer.h"
 #include "CheckGLErrors.h"
-
-
+#include "Vertex.h"
 
 #include <iostream>
 

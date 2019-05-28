@@ -17,33 +17,20 @@ class VisualizerWindow : public QGLWidget
 {
 private:
 	Camera camera;
-	GLuint programID;
-	GLuint normalProgramID;	//programID for normalVertexShader
-	GLint modelToProjMatUniformLoc;
-	GLint modelToWorldMatUniformLoc;
-	GLint ambientLightUniformLoc;
-	GLint diffuseLightPosWorldUniformLoc;
-	GLint normalShaderModelToProjMatUniformLoc;
-	GLint eyePosWorldUniformLocation;
-	GLuint theVertexBufferID;
-	GLuint theIndexBufferID;
-	GLuint cubeVertexArrayObjectID;
-	GLuint starVertexArrayObjectID;
-	GLuint cubeNormalVertexArrayObjectID;
-	std::vector<VertexBuffer> vb;
-	std::vector<IndexBuffer> ib;
-	std::vector<VertexBufferLayout> layout;
-	std::vector<VertexArray> va;
-	std::vector<Shader> shader;
+	//std::vector<VertexBuffer> vb;
+	//std::vector<IndexBuffer> ib;
+	//std::vector<VertexBufferLayout> layout;
+	//std::vector<VertexArray> va;
+	//std::vector<Shader> shader;
+
+	VertexBuffer* vbuf;
+	IndexBuffer* ibuf;
+	VertexBufferLayout* layout1;
+	VertexArray* va1;
+	Shader* sh1;
 	Renderer renderer;
 
-	//void SendUpdatedDataToOpengl();
 	void SendDataToOpenGL();
-	bool CheckStatus(GLuint objectID, PFNGLGETSHADERIVPROC objectPropertyGetterFunc, PFNGLGETSHADERSOURCEPROC getInfoLogFunc, GLenum statusType);
-	bool CheckShaderStatus(GLuint shaderID);
-	bool CheckProgramStatus(GLuint programID);
-	std::string ReadShaderCode(const char* fileName);
-	void InstallShaders();
 
 protected:
 	void initializeGL() override;
