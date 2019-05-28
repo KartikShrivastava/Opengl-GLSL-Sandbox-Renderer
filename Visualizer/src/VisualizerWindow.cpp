@@ -14,32 +14,39 @@
 
 #define N 10000
 
+void VisualizerWindow::initializeGL() {
+	setMinimumSize(800, 500);
+	setMouseTracking(true);
+	glewInit();
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	SendDataToOpenGL();
+}
+
 void VisualizerWindow::SendDataToOpenGL() {
 	
 	std::vector<ShapeData> shapes;
-	shapes.push_back(ShapeGenerator::makeTeapot());
 	
-	vbuf = new VertexBuffer(shapes[0].GetVertexBufferSize(), shapes[0].vertices);
-	ibuf = new IndexBuffer(shapes[0].GetIndexBufferSize(), shapes[0].indices, shapes[0].numIndices);
+	shapes.push_back(ShapeGenerator::makeTeapot());
+	shapes.push_back(ShapeGenerator::MakeCube());
+	shapes.push_back(ShapeGenerator::MakePlane(50));
 
-	layout1 = new VertexBufferLayout();
-	layout1->Push<float>(3);
-	layout1->Push<float>(3);
-	layout1->Push<float>(3);
+	for (int i = 0; i < shapes.size(); i++) {
+		vb.push_back(VertexBuffer(shapes[i].GetVertexBufferSize(), shapes[i].vertices));
+		ib.push_back(IndexBuffer(shapes[i].GetIndexBufferSize(), shapes[i].indices, shapes[i].numIndices));
+		layout.push_back(VertexBufferLayout());
+		layout[i].Push<float>(3);	//vertex position
+		layout[i].Push<float>(3);	//vertex color
+		layout[i].Push<float>(3);	//normals
+		va.push_back(VertexArray(vb[i], layout[i]));
+	}
 
-	va1 = new VertexArray(*vbuf, *layout1);
-
-	shapes[0].CleanupData();
+	for(auto shape : shapes)
+		shape.CleanupData();
 	shapes.clear();
 
-	sh1 = new Shader();
-	sh1->CreateShader("res/shaders/VertexShaderCode.glsl", "res/shaders/FragmentShaderCode.glsl");
-	sh1->Bind();
-
-	vbuf->UnBind();
-	ibuf->UnBind();
-	va1->UnBind();
-	sh1->UnBind();
+	shader.push_back(Shader());
+	shader[0].CreateShader("res/shaders/VertexShaderCode.glsl", "res/shaders/FragmentShaderCode.glsl");
 }
 
 void VisualizerWindow::paintGL() {
@@ -48,24 +55,38 @@ void VisualizerWindow::paintGL() {
 
 	glm::mat4 modelToProjMat;
 	glm::mat4 worldToViewMatrix = camera.GetWorldToViewMatrix();
-	glm::mat4 viewToProjectionMatrix = glm::perspective(glm::radians(60.0f), ((float)width()) / height(), 0.1f, 300.0f);
+	glm::mat4 viewToProjectionMatrix = glm::perspective(glm::radians(50.0f), ((float)width()) / height(), 0.1f, 300.0f);
 	glm::mat4 worldToProjectionMatrix = viewToProjectionMatrix * worldToViewMatrix;
 
-	{
-		sh1->Bind();
-		sh1->SetUniform3f("diffuseLightPosWorld", 0.0f, 2.0f, 0.0f);
-		sh1->SetUniform3fv("eyePosWorld", camera.GetPosition());
-		sh1->SetUniform4f("ambientLight", 0.1f, 0.1f, 0.1f, 1.0f);
-		
-		glm::mat4 modelToWorlMatrix =
-			glm::translate(glm::vec3(0.0f, 0.0f, -5.0f)) *
-			glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	shader[0].Bind();
+	shader[0].SetUniform3f("diffuseLightPosWorld", 0.0f, 2.0f, 0.0f);
+	shader[0].SetUniform3fv("eyePosWorld", camera.GetPosition());
+	shader[0].SetUniform4f("ambientLight", 0.1f, 0.1f, 0.1f, 1.0f);
+	
+	{	//teapot
+		glm::mat4 modelToWorlMatrix = glm::translate(glm::vec3(2.0f, 2.0f, -8.0f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		modelToProjMat = worldToProjectionMatrix * modelToWorlMatrix;
+		shader[0].SetUniformMat4f("modelToWorldMat", modelToWorlMatrix);
+		shader[0].SetUniformMat4f("modelToProjMat", modelToProjMat);
+		renderer.Draw(va[0], ib[0], shader[0]);
+	}
 
-		sh1->SetUniformMat4f("modelToWorldMat", modelToWorlMatrix);
-		sh1->SetUniformMat4f("modelToProjMat", modelToProjMat);
+	{	//cube
+		for (int i = 0; i <= 360; i+=30) {
+			glm::mat4 modelToWorlMatrix = glm::rotate(glm::radians((float)i), glm::vec3(0.0f, 1.0f, 0.0f)) * glm::translate(glm::vec3(0.0f, 1.0f, -8.0f));
+			modelToProjMat = worldToProjectionMatrix * modelToWorlMatrix;
+			shader[0].SetUniformMat4f("modelToWorldMat", modelToWorlMatrix);
+			shader[0].SetUniformMat4f("modelToProjMat", modelToProjMat);
+			renderer.Draw(va[1], ib[1], shader[0]);
+		}
+	}
 
-		renderer.Draw(*va1, *ibuf, *sh1);
+	{	//plane
+		glm::mat4 modelToWorlMatrix = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f)) * glm::rotate(glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		modelToProjMat = worldToProjectionMatrix * modelToWorlMatrix;
+		shader[0].SetUniformMat4f("modelToWorldMat", modelToWorlMatrix);
+		shader[0].SetUniformMat4f("modelToProjMat", modelToProjMat);
+		renderer.Draw(va[2], ib[2], shader[0]);
 	}
 
 }
@@ -99,20 +120,10 @@ void VisualizerWindow::keyPressEvent(QKeyEvent* e) {			//this is an overloaded v
 	repaint();
 }
 
-void VisualizerWindow::initializeGL() {
-	setMinimumSize(800, 500);
-	setMouseTracking(true);
-	glewInit();
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	SendDataToOpenGL();
+VisualizerWindow::~VisualizerWindow() {
+	vb.clear();
+	ib.clear();
+	layout.clear();
+	va.clear();
+	shader.clear();
 }
-
-//VisualizerWindow::~VisualizerWindow() {
-	//glDeleteBuffers(1, &theVertexBufferID);
-	//glDeleteBuffers(1, &theIndexBufferID);
-	//glDeleteVertexArrays(1, &cubeVertexArrayObjectID);
-	//glDeleteBuffers(1, &starVertexArrayObjectID);
-	//glUseProgram(0);		//we can not delete the shader if its being used
-	//glDeleteProgram(programID);
-//}

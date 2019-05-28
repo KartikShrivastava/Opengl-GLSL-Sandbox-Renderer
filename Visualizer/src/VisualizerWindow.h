@@ -17,18 +17,12 @@ class VisualizerWindow : public QGLWidget
 {
 private:
 	Camera camera;
-	//std::vector<VertexBuffer> vb;
-	//std::vector<IndexBuffer> ib;
-	//std::vector<VertexBufferLayout> layout;
-	//std::vector<VertexArray> va;
-	//std::vector<Shader> shader;
-
-	VertexBuffer* vbuf;
-	IndexBuffer* ibuf;
-	VertexBufferLayout* layout1;
-	VertexArray* va1;
-	Shader* sh1;
 	Renderer renderer;
+	std::vector<VertexBuffer> vb;
+	std::vector<IndexBuffer> ib;
+	std::vector<VertexBufferLayout> layout;
+	std::vector<VertexArray> va;
+	std::vector<Shader> shader;
 
 	void SendDataToOpenGL();
 
@@ -39,5 +33,5 @@ protected:
 	void keyPressEvent(QKeyEvent*);
 
 public:
-	//~VisualizerWindow();
+	~VisualizerWindow();
 };
