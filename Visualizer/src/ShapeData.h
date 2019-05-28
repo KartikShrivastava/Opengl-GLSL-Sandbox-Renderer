@@ -3,6 +3,10 @@
 #include "GL/glew.h"
 #include "Vertex.h"
 
+
+
+#include <iostream>
+
 struct ShapeData {
 	Vertex* vertices;
 	GLuint numVertices;
@@ -11,9 +15,13 @@ struct ShapeData {
 
 	ShapeData() : vertices(0), numVertices(0), indices(0), numIndices(0){}
 
-	int GetVertexBufferSize() const { return numVertices * sizeof(Vertex); }
+	//~ShapeData() {
+	//	std::cout << "Shape Data destructor called" << std::endl;
+	//}
 
-	int GetIndexBufferSize() const{ return numIndices * sizeof(GLushort); }
+	GLuint GetVertexBufferSize() const { return numVertices * sizeof(Vertex); }
+
+	GLuint GetIndexBufferSize() const{ return numIndices * sizeof(GLushort); }
 
 	void CleanupData() {
 		delete[] vertices;

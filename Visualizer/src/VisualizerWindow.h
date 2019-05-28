@@ -1,9 +1,17 @@
 #pragma once
 
+#include <vector>
+
 #include <gl\glew.h>
 #include <QtOpenGL/QGLWidget>
 
 #include "Camera.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "VertexArray.h"
+#include "Shader.h"
+#include "Renderer.h"
 
 class VisualizerWindow : public QGLWidget
 {
@@ -22,6 +30,12 @@ private:
 	GLuint cubeVertexArrayObjectID;
 	GLuint starVertexArrayObjectID;
 	GLuint cubeNormalVertexArrayObjectID;
+	std::vector<VertexBuffer> vb;
+	std::vector<IndexBuffer> ib;
+	std::vector<VertexBufferLayout> layout;
+	std::vector<VertexArray> va;
+	std::vector<Shader> shader;
+	Renderer renderer;
 
 	//void SendUpdatedDataToOpengl();
 	void SendDataToOpenGL();
@@ -38,5 +52,5 @@ protected:
 	void keyPressEvent(QKeyEvent*);
 
 public:
-	~VisualizerWindow();
+	//~VisualizerWindow();
 };
