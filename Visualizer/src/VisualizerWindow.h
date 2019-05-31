@@ -13,6 +13,8 @@
 #include "Shader.h"
 #include "Renderer.h"
 
+struct VisualizerModel;
+
 class VisualizerWindow : public QGLWidget
 {
 private:
@@ -23,8 +25,11 @@ private:
 	std::vector<VertexBufferLayout> layout;
 	std::vector<VertexArray> va;
 	std::vector<Shader> shader;
+	VisualizerModel* visualizerModel;
 
 	void SendDataToOpenGL();
+	void GenerateShapes();
+	void GenerateNormals();
 
 protected:
 	void initializeGL() override;
@@ -33,5 +38,6 @@ protected:
 	void keyPressEvent(QKeyEvent*);
 
 public:
+	VisualizerWindow(VisualizerModel* model);
 	~VisualizerWindow();
 };

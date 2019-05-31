@@ -7,7 +7,7 @@ class DebugSlider : public QWidget
 {
 	Q_OBJECT
 
-		QSlider* slider;
+	QSlider* slider;
 	QLabel* label;
 	float sliderGranularity;
 	float min;
@@ -20,9 +20,7 @@ signals:
 	void valueChanged(float newValue);
 
 public:
-	DebugSlider(float value = 0.0f,
-		float min = -10.0f, float max = 10.0f,
-		bool textOnLeft = false, float granularity = 40.0);
+	DebugSlider(float value = 0.0f, float min = -10.0f, float max = 10.0f, bool textOnLeft = true, float granularity = 40.0);
 	float value() const;
 	void setValue(float newValue);
 };

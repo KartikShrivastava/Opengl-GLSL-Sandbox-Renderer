@@ -8,11 +8,6 @@ VertexArray::VertexArray(const VertexBuffer& vb, const VertexBufferLayout& layou
 	AddBuffer(vb, layout);
 }
 
-//VertexArray::~VertexArray(){
-//	std::cout << "VertexArray destructor called" << std::endl;
-//	GLCall(glDeleteVertexArrays(1, &m_RendererID));
-//}
-
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout){
 	Bind();
 	vb.Bind();
@@ -32,4 +27,8 @@ void VertexArray::Bind() const{
 
 void VertexArray::UnBind() const{
 	GLCall(glBindVertexArray(0));
+}
+
+void VertexArray::CleanupData(){
+	GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }

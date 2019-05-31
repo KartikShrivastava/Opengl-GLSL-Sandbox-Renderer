@@ -43,6 +43,7 @@
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\VisualizerWidget.cpp" />
+    <ClCompile Include="src\VisualizerWidget_moc.cpp" />
     <ClCompile Include="src\VisualizerWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +62,7 @@
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
+    <ClInclude Include="src\VisualizerModel.h" />
     <ClInclude Include="src\VisualizerWidget.h" />
     <ClInclude Include="src\VisualizerWindow.h" />
   </ItemGroup>

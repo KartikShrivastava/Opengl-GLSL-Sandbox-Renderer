@@ -13,11 +13,6 @@ Shader::Shader() : m_RendererID(0) {
 //	m_RendererID = CreateShader(ParseShader(vertexFilePath), ParseShader(fragmentFilePath));
 //}
 
-//Shader::~Shader(){
-//	std::cout << "Shader destructor called" << std::endl;
-//	GLCall(glDeleteProgram(m_RendererID));
-//}
-
 std::string Shader::ParseShader(const std::string& filePath)
 {
 	std::ifstream inputFile(filePath);
@@ -82,9 +77,9 @@ void Shader::CreateShader(const std::string& vertexShaderFile, const std::string
 	CheckProgramStatus(program);
 
 	GLCall(glDeleteShader(vs));
-	//GLCall(glDetachShader(program, vs));
+	GLCall(glDetachShader(program, vs));
 	GLCall(glDeleteShader(fs));
-	//GLCall(glDetachShader(program, fs));
+	GLCall(glDetachShader(program, fs));
 
 	m_RendererID = program;
 }
@@ -132,4 +127,8 @@ void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2,
 
 void Shader::SetUniformMat4f(const std::string& name, glm::mat4 matrix){
 	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+}
+
+void Shader::CleanupData(){
+	GLCall(glDeleteProgram(m_RendererID));
 }

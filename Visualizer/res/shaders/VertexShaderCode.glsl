@@ -14,5 +14,5 @@ void main()
 {
 	gl_Position = modelToProjMat * vertexPositionModel;
 	vertexPosWorld = vec3(modelToWorldMat * vertexPositionModel);			//apply the vector addition for diffuse light on world coordinates not just model coordinates
-	normalWorld = vec3(modelToWorldMat * vec4(normalModel,0));					//apply rotation to normals (rotation issue with diffuse)
+	normalWorld = vec3(modelToWorldMat * vec4(normalModel,0));				//apply rotation to normals (rotation issue with diffuse)
 }

@@ -5,10 +5,13 @@
 #include "VisualizerWidget.h"
 
 int main(int argc, char* argv[]) {
-
+	 
 	QApplication app(argc, argv);
-	VisualizerWindow window;		//Check out VisualizerWindow class for all OpenGL stuff
+	VisualizerWidget window;
 	window.show();
+
+	//VisualizerWindow window;		//Check out VisualizerWindow class for all OpenGL stuff
+	//window.show();
 
 	return app.exec();
 }

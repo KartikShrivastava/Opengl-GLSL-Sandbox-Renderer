@@ -9,5 +9,5 @@ out vec3 theColor;
 void main(){
 	vec4 v = vec4(position, 1.0);
 	gl_Position = normalShaderModelToProjMat * v;
-	theColor = vec3(0.0, 1.0, 1.0);
+	theColor = vec3(1.0, 1.0, 0.5);
 }
